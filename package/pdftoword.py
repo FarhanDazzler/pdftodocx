@@ -60,9 +60,7 @@ def pdfToDocx(filename, remote_name, output_name):
                 request_download = groupdocs_conversion_cloud.DownloadFileRequest(output_name)
                 response_download = file_api.download_file(request_download)
                 print("Response Download ", response_download)
-                copyfile(response_download,'3rd.docx')
-                send_from_directory(os.path.abspath(''),
-                               '3rd.docx', as_attachment=True)
+                copyfile(response_download,'/home/hassan/MyFiles/projects/pdftodocx/downloads/3rd.docx')
                 print("Successful")
         except groupdocs_conversion_cloud.ApiException as e:
                 print("Exception when calling get_supported_conversion_types: {0}".format(e.message))

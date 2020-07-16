@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, url_for, render_template, send_from_directory
+from flask import Flask, request, redirect, url_for, render_template, send_from_directory, send_file
 from werkzeug.utils import secure_filename
 import os 
 
@@ -41,9 +41,17 @@ def index():
                      remote_name=filename,
                       output_name=filename)
            print("response from server", res)
+           return render_template("download.html")
         #    process_file(os.path.join(app.config['UPLOAD_FOLDER'], filename), filename)
         #    return redirect(url_for('uploaded_file', filename=filename))
    return render_template('index.html')
+
+@app.route('/download')
+def downloadFile():
+    path = '3rd.docx'
+    return send_from_directory(app.config['DOWNLOAD_FOLDER'], '3rd.docx', as_attachment=True)
+    # return send_file(path, as_attachment=True)
+
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
