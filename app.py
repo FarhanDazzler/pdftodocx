@@ -41,15 +41,15 @@ def index():
                      remote_name=filename,
                       output_name=filename)
            print("response from server", res)
-           return render_template("download.html")
+           return render_template("download.html",output=filename.rsplit('.')[0]+'.docx')
         #    process_file(os.path.join(app.config['UPLOAD_FOLDER'], filename), filename)
         #    return redirect(url_for('uploaded_file', filename=filename))
    return render_template('index.html')
 
-@app.route('/download')
-def downloadFile():
-    path = '3rd.docx'
-    return send_from_directory(app.config['DOWNLOAD_FOLDER'], '3rd.docx', as_attachment=True)
+@app.route('/download/<string:saved_file>')
+def downloadFile(saved_file):
+    # path = '3rd.docx'
+    return send_from_directory(app.config['DOWNLOAD_FOLDER'], saved_file, as_attachment=True)
     # return send_file(path, as_attachment=True)
 
 
