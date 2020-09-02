@@ -35,9 +35,11 @@ project itself.
 
 # About
 
-This project is developed by Farhan Dazzler
-and Hassan Bari Raza.
+This project is developed by **Farhan Dazzler**
+and **Hassan Bari Raza**.
+
 Contacts
-Ph no- 7549523488
-       7004337980
+-------
+Ph no- 7549523488  
+7004337980  
 Mail - farhandazzler1999@gmail.com
