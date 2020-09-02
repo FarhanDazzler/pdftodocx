@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="icon" href="logo.png">
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+		integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+	<!-- reference your copy Font Awesome here (from our CDN or by hosting yourself) -->
+	<script src="https://kit.fontawesome.com/72c1629dc6.js" crossorigin="anonymous"></script>
+
+	<!-- <script data-ad-client="ca-pub-2088727481622342" async
+		src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> -->
+	<!-- Drag and drop function by FarhanDazzler -->
+
+	<style>
+		.drop-zone {
+			max-width: 100%;
+			height: 200px;
+			padding: 25px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			text-align: center;
+			font-family: "Quicksand", sans-serif;
+			font-weight: 500;
+			font-size: 20px;
+			cursor: pointer;
+			color: #292828;
+			border: 4px dashed #6dfaac;
+			border-radius: 10px;
+		}
+
+		.drop-zone--over {
+			border-style: solid;
+		}
+
+		.drop-zone__input {
+			display: none;
+		}
+
+		.drop-zone__thumb {
+			width: 100%;
+			height: 100%;
+			border-radius: 10px;
+			overflow: hidden;
+			background-color: #cccccc;
+			background-size: cover;
+			position: relative;
+		}
+
+		.drop-zone__thumb::after {
+			content: attr(data-label);
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			padding: 5px 0;
+			color: #ffffff;
+			background: rgba(0, 0, 0, 0.75);
+			font-size: 14px;
+			text-align: center;
+		}
+	</style>
+
+
+
+	<title>Doc to Pdf converter</title>
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+		<!-- <a class="navbar-brand" href="#">Doc to Pdf</a> -->
+		<!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+			aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button> -->
+
+
+		<div class="collapse navbar-collapse" id="navbarCollapse">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item ">
+					<a class="nav-link lead" href="{{url_for('index')}}"> <i class="fas fa-file-pdf"></i> Pdf to Doc
+						<span class="sr-only"></span></span></a>
+				</li>
+
+				<li class="nav-item lead active ">
+					<a class="nav-link" href="{{url_for('toPdf')}}"> <i class="far fa-file-word"></i> Doc to Pdf
+						</span></a>
+				</li>
+
+
+				<li class="nav-item lead">
+					<a class="nav-link" href="#" data-toggle="modal" data-target="#exampleModal">About</a>
+				</li>
+				<li class="nav-item lead">
+					<a class="nav-link" href="#">Contact Us</a>
+				</li>
+			</ul>
+			<!-- Search bar disable -->
+			<!-- <form class="form-inline mt-2 mt-md-0">
+				<input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+			</form> -->
+		</div>
+	</nav>
+
+
+	<!-- Modal -->
+	<!-- about us (developer) -->
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">About Developer</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body lead">
+					Developed by <a href="http://farhandazzler.com">Farhan Dazzler</a> and <a
+						href="https://linkedin.com/in/hassan-bari-raza-495876189/">Hassan Bari Raza</a>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- the main contanieer here by farhanDazzler -->
+	<main role="main" class="container">
+		<div class="jumbotron">
+			<h1 class="text-center">Doc to Pdf converter </h1>
+			<p class="lead text-center text-dark">Select the file OR Drop the file here OR Choose from cloud.</p>
+
+			<button class="dropdown btn btn-lg btn-success dropdown-toggle btn-block " type="button"
+				id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				Select DOC file
+			</button>
+			<div class=" dropdown-menu dropdown-menu-right dropdown-menu-lg-left" aria-labelledby="dropdownMenuButton">
+				<!-- <a class="dropdown-item" href="#"><input type="file"> from Device</a> -->
+				<a class="dropdown-item lead" href="https://drive.google.com/" target="_blank"><i
+						class="fab fa-google-drive"></i> from google Drive </a>
+				<a class="dropdown-item lead" href="https://www.dropbox.com/" target="_blank">
+					<i class="fab fa-dropbox"></i> from Dropdox</a>
+			</div>
+
+
+
+
+			<!-- Darg and drop contineer ui  by farhandazzler, modified by Hassan Bari Raza-->
+			<form method="POST" enctype="multipart/form-data">
+				<div class="drop-zone">
+					<span class="drop-zone__prompt ">Drop file or click here to upload</span>
+					<input type="file" name="file" accept=".docx" class="drop-zone__input">
+				</div>
+				</span>
+				<!-- 
+				convert button ,download button , upload button  by farhandazzler
+			 -->
+
+
+				<!-- progress bar -->
+				<div class="container" style="margin-top:1%" ;>
+					<div class="progress" style="height:15px">
+						<div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+							style="width:0%"></div>
+					</div>
+				</div>
+
+
+
+				<button type="submit" id="convert" onclick="convertBtn()"
+					class="btn btn-dark btn-block my-2">Convert</button>
+			</form>
+			<!-- uploading progress bar -->
+			<button class="btn btn-primary  btn-block my-2 " hidden="hidden" id="uploading" type="button" disabled>
+				<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+				Uploading...
+			</button>
+			<!-- download button -->
+			<!-- <button type="button" id="download" onclick="downloadBtn()" hidden="hidden"
+					class="btn btn-dark btn-block my-2">Download</button>
+
+			 -->
+
+			<!-- Button coversion logic -->
+			<script>
+
+
+				function progress() {
+					var i = 0;
+					if (i == 0) {
+						i = 1;
+						var element_id = document.getElementById("progressBar");
+						var width = 1;
+						var id = setInterval(frame, 1100);
+						function frame() {
+							if (width >= 100) {
+								clearInterval(id);
+								i = 0;
+
+							} else {
+								width += 30;
+								element_id.style.width = width + "%";
+							}
+						}
+					}
+				}
+
+
+				function convertBtn() {
+					document.getElementById("convert").hidden = False;
+					document.getElementById("uploading").hidden = false;
+					progress()
+					setInterval(downloadBtn, 30000);
+					// hassan change the time according to delta function
+				}									// interval set to 30 sec
+				function downloadBtn() {
+					document.getElementById("uploading").hidden = true;
+					// document.getElementById("download").hidden = false;
+				}
+
+
+
+			</script>
+
+
+			<!-- Darg and Drop logic -->
+			<script>
+				document.querySelectorAll(".drop-zone__input").forEach((inputElement) => {
+					const dropZoneElement = inputElement.closest(".drop-zone");
+
+					dropZoneElement.addEventListener("click", (e) => {
+						inputElement.click();
+					});
+
+					inputElement.addEventListener("change", (e) => {
+						if (inputElement.files.length) {
+							updateThumbnail(dropZoneElement, inputElement.files[0]);
+						}
+					});
+
+					dropZoneElement.addEventListener("dragover", (e) => {
+						e.preventDefault();
+						dropZoneElement.classList.add("drop-zone--over");
+					});
+
+					["dragleave", "dragend"].forEach((type) => {
+						dropZoneElement.addEventListener(type, (e) => {
+							dropZoneElement.classList.remove("drop-zone--over");
+						});
+					});
+
+					dropZoneElement.addEventListener("drop", (e) => {
+						e.preventDefault();
+
+						if (e.dataTransfer.files.length) {
+							inputElement.files = e.dataTransfer.files;
+							updateThumbnail(dropZoneElement, e.dataTransfer.files[0]);
+						}
+
+						dropZoneElement.classList.remove("drop-zone--over");
+					});
+				});
+
+				/**
+				 * Updates the thumbnail on a drop zone element.
+				 *
+				 * @param {HTMLElement} dropZoneElement
+				 * @param {File} file
+				 */
+				function updateThumbnail(dropZoneElement, file) {
+					let thumbnailElement = dropZoneElement.querySelector(".drop-zone__thumb");
+
+					// First time - remove the prompt
+					if (dropZoneElement.querySelector(".drop-zone__prompt")) {
+						dropZoneElement.querySelector(".drop-zone__prompt").remove();
+					}
+
+					// First time - there is no thumbnail element, so lets create it
+					if (!thumbnailElement) {
+						thumbnailElement = document.createElement("div");
+						thumbnailElement.classList.add("drop-zone__thumb");
+						dropZoneElement.appendChild(thumbnailElement);
+					}
+
+					thumbnailElement.dataset.label = file.name;
+
+					// Show thumbnail for image files
+					if (file.type.startsWith("image/")) {
+						const reader = new FileReader();
+
+						reader.readAsDataURL(file);
+						reader.onload = () => {
+							thumbnailElement.style.backgroundImage = `url('${reader.result}')`;
+						};
+					} else {
+						thumbnailElement.style.backgroundImage = null;
+					}
+				}
+			</script>
+
+
+
+	</main>
+	<footer class="footer mt-auto py-3">
+		<div class="container">
+			<span class="text-muted">&copy;Copyright 2020 </span>
+		</div>
+	</footer>
+
+
+	<!-- Optional JavaScript -->
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+		integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+		crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+		integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+		crossorigin="anonymous"></script>
+</body>
+
+</html>
